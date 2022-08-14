@@ -1,0 +1,6 @@
+.appTodo {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0 0 15px;
+    flex-wrap: wrap;
+}

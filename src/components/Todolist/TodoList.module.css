@@ -1,0 +1,46 @@
+.container{
+    position: relative;
+    margin: 10px 15px 0 10px;
+    border: 1px black solid;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    padding: 15px 15px 55px 15px;
+}
+
+.addTaskBlock{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.title{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 10px 0;
+}
+
+h2 {
+    margin: 0 0 0 0;
+}
+
+.filterBlock{
+    margin: 20px 0 5px 0;
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translate(50%, -25%);
+
+}
+
+.deleteButton{
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(40%, -40%);
+}

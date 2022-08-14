@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 .App {
   text-align: center;
 }
@@ -5,6 +7,13 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.App-Todo {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0 0 15px;
+  flex-wrap: wrap;
 }
 
 @media (prefers-reduced-motion: no-preference) {

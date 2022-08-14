@@ -1,0 +1,13 @@
+.taskContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 10px 0 10px ;
+    align-items: center;
+}
+
+.titleToDo{
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
