@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import todoReducer from './todoSlice'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {ThunkDispatch} from "redux-thunk";
 import appSlice from "./appSlice";
 import taskSlice from "./taskSlice";
 import thunkMiddleware from 'redux-thunk';
@@ -25,7 +25,6 @@ export type AppStateType = ReturnType<typeof store.getState>
 
 export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector
 export const useAppDispatch = () => useDispatch<ThunkDispatch<AppStateType, unknown, RootReducerType>>()
-export type AppThunk<T = void> = ThunkAction<T, AppStateType, unknown, RootReducerType>
 export type RootReducerType = any
 
 //@ts-ignore

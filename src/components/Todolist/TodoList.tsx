@@ -27,7 +27,7 @@ const TodoList = (props:TodoListPropsType) => {
     const [title,setTitle] = useState(todoList ? todoList.title : '')
 
     useEffect(()=>{
-        dispatch(getTasks(props.id))
+        dispatch(getTasks({todoListId: props.id}))
     },[todoList, dispatch, props.id])
 
 
@@ -38,7 +38,7 @@ const TodoList = (props:TodoListPropsType) => {
     }
     const addNewTaskButtonHandler = () => {
         if (newTaskTitle.trim() !== '') {
-            dispatch(addTask(props.id, newTaskTitle))
+            dispatch(addTask({todoListId: props.id, newTaskTitle}))
         }
     }
     const removeTodoListHandler = () => {

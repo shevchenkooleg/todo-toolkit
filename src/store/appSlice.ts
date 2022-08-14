@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppAPI} from "../api/appApi";
 import {openNotificationWithIcon} from "../utils/notification/notification";
 import {getTodoListsTC} from "./todoSlice";
@@ -18,7 +18,6 @@ export const loginTC = createAsyncThunk('appSlice/login',
             }
         })
     })
-
 export const logOutTC = createAsyncThunk('appSlice/logout',
     () => {
         return AppAPI.logOut().then((res) => {
@@ -28,7 +27,6 @@ export const logOutTC = createAsyncThunk('appSlice/logout',
             }
         })
     })
-
 export const initializeAppTC = createAsyncThunk('appSlice/initializeApp',
     (params: {},thunkAPI)=>{
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))

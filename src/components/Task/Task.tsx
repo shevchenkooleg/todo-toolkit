@@ -2,7 +2,6 @@ import {Button, Checkbox, Input} from 'antd';
 import React, {ChangeEvent, useState} from 'react';
 import s from './Task.module.css'
 import {DeleteOutlined} from "@ant-design/icons";
-import {CheckboxChangeEvent} from "antd/es/checkbox";
 import {createDataObj} from "../../utils/createDataObjForTasksUpdate";
 import {removeTask, TaskType, updateTaskTC } from '../../store/taskSlice';
 import { useAppDispatch } from '../../store/toolkitStore';
@@ -20,10 +19,10 @@ const Task = (props: TaskPropsType) => {
     const [title, setTitle] = useState(props.task.title)
 
     const removeTaskHandler = () => {
-        dispatch(removeTask(props.task.todoListId, props.task.id))
+        dispatch(removeTask({todoListId: props.task.todoListId, taskId: props.task.id}))
     }
-    const onCheckBoxClickHandler = (e: CheckboxChangeEvent) => {
-        dispatch(updateTaskTC(props.task.todoListId, props.task.id, createDataObj(props.task)))
+    const onCheckBoxClickHandler = () => {
+        dispatch(updateTaskTC({todoListId: props.task.todoListId, taskId: props.task.id, data: createDataObj(props.task)}))
     }
     const editTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
@@ -33,7 +32,7 @@ const Task = (props: TaskPropsType) => {
     }
     const editTaskTitleModeOff = () => {
         if (title !== props.task.title){
-            dispatch(updateTaskTC(props.task.todoListId, props.task.id, {title}))
+            dispatch(updateTaskTC({todoListId: props.task.todoListId, taskId: props.task.id, data: {title}}))
             setEdit(false)
         } else {
             setEdit(false)
@@ -42,7 +41,7 @@ const Task = (props: TaskPropsType) => {
 
     return (
         <div className={s.taskContainer}>
-            <Checkbox onChange={onCheckBoxClickHandler} checked={props.task.status === 0 ? false : true}></Checkbox>
+            <Checkbox onChange={onCheckBoxClickHandler} checked={props.task.status !== 0}></Checkbox>
             <div className={s.taskTitle}>
                 {edit
                     ? <Input value={title} autoFocus={true} onChange={editTaskTitleHandler} onBlur={editTaskTitleModeOff}/>

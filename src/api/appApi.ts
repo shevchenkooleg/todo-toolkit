@@ -41,8 +41,8 @@ export const TaskAPI = {
     getTask(todoListId: string){
         return instance.get(`/todo-lists/${todoListId}/tasks`)
     },
-    addTask(data: {todoListId: string, newTaskTile: string}){
-        return instance.post(`/todo-lists/${data.todoListId}/tasks`, {title: data.newTaskTile})
+    addTask(data: {todoListId: string, newTaskTitle: string}){
+        return instance.post(`/todo-lists/${data.todoListId}/tasks`, {title: data.newTaskTitle})
     },
     removeTask(data: {todoListId: string, taskId: string}){
         return instance.delete(`/todo-lists/${data.todoListId}/tasks/${data.taskId}`)
