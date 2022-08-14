@@ -9,22 +9,22 @@ import s from './AddItem.module.css'
 const AddItem = () => {
 
     const dispatch = useAppDispatch()
-    const [newTodoTitle, setNewTodoTitle] = useState('')
+    const [newTodoListTitle, setNewTodoListTitle] = useState('')
 
     const onNewTodoTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTodoTitle(e.currentTarget.value)
+        setNewTodoListTitle(e.currentTarget.value)
     }
     const addTodoListHandler = () => {
-        if (newTodoTitle.trim() !== '') {
-            dispatch(addTodoListTC(newTodoTitle))
-            setNewTodoTitle('')
+        if (newTodoListTitle.trim() !== '') {
+            dispatch(addTodoListTC({newTodoListTitle}))
+            setNewTodoListTitle('')
         }
     }
 
     return (
         <div className={s.container}>
             <Input size={"small"} placeholder="Add new TODO" style={{margin: '0 15px 0 0'}}
-                   value={newTodoTitle} onChange={onNewTodoTitleChangeHandler}/>
+                   value={newTodoListTitle} onChange={onNewTodoTitleChangeHandler}/>
             <Button icon={<PlusOutlined/>} size={"middle"} onClick={addTodoListHandler}/>
         </div>
     );

@@ -1,8 +1,8 @@
-import {CloseCircleOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import {CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Segmented } from 'antd';
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {addTask, getTasks, setNewTaskTitleValue, TaskType } from '../../store/taskSlice';
-import {changeTodoListTitle, removeTodoListTC } from '../../store/todoSlice';
+import {changeTodoListTitleTC, removeTodoListTC } from '../../store/todoSlice';
 import { useAppDispatch, useAppSelector } from '../../store/toolkitStore';
 import Task from '../Task/Task';
 import s from './TodoList.module.css'
@@ -42,7 +42,7 @@ const TodoList = (props:TodoListPropsType) => {
         }
     }
     const removeTodoListHandler = () => {
-        dispatch(removeTodoListTC(props.id))
+        dispatch(removeTodoListTC({todolistId: props.id}))
     }
 
     const editModeON = () => {
@@ -51,7 +51,7 @@ const TodoList = (props:TodoListPropsType) => {
 
     const editModeOFF = ()=>{
         if (todoList && title !== todoList.title){
-            dispatch(changeTodoListTitle(props.id, title))
+            dispatch(changeTodoListTitleTC({todoListId: props.id, newTitle: title}))
             setEdit(false)
         } else {
             setEdit(false)

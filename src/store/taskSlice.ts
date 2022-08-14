@@ -2,9 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppThunk} from "./toolkitStore";
 import {TaskAPI} from "../api/appApi";
 import {openNotificationWithIcon} from "../utils/notification/notification";
-import {ToDoListType} from "./todoSlice";
-import {setTodoLists} from './todoSlice'
-import {removeTodoList} from "./todoSlice";
+import {getTodoListsTC, removeTodoListTC, ToDoListType} from "./todoSlice";
 
 
 export type TaskType = {
@@ -45,13 +43,13 @@ export const taskSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(setTodoLists, (state, action) => {
+        builder.addCase(getTodoListsTC.fulfilled, (state, action) => {
             action.payload.data.forEach((el: ToDoListType) => {
                 state[el.id] = {tasks: [] as TaskType[], newTaskTitle: ''}
             })
         })
-        builder.addCase(removeTodoList, (state, action) => {
-            delete state[action.payload.id]
+        builder.addCase(removeTodoListTC.fulfilled, (state, action) => {
+            if (action.payload) delete state[action.payload.id]
         })
     }
 })
