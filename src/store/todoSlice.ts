@@ -16,10 +16,12 @@ export const getTodoListsTC = createAsyncThunk('todos/getTodoListsTC', () => {
         return {data: res.data}
     })
 })
-export const addTodoListTC = createAsyncThunk('todos/addTodoListTC', (param: { newTodoListTitle: string }, thunkAPI) => {
-    ToDoAPI.addNewToDo(param.newTodoListTitle).then((res) => {
+export const addTodoListTC = createAsyncThunk('todos/addTodoListTC', (param: { newTodoListTitle: string }) => {
+    return ToDoAPI.addNewToDo(param.newTodoListTitle).then((res) => {
         if (res.data.resultCode === 0) {
-            thunkAPI.dispatch(getTodoListsTC())
+            return {data: res.data.data.item}
+            // thunkAPI.dispatch(getTodoListsTC())
+
         } else if (res.data.resultCode === 1) {
             openNotificationWithIcon('error', 'Error', res.data.messages[0])
         }
@@ -30,7 +32,7 @@ export const addTodoListTC = createAsyncThunk('todos/addTodoListTC', (param: { n
 export const removeTodoListTC = createAsyncThunk('todos/removeTodoListTC', (param: { todolistId: string }) => {
     return ToDoAPI.removeToDo(param.todolistId).then((res) => {
         if (res.data.resultCode === 0) {
-            return {id: param.todolistId}
+            return {todolistId: param.todolistId}
         }
     })
 })
@@ -51,8 +53,11 @@ const todoSlice = createSlice({
     },
     reducers: {},
     extraReducers: (builder) => {
+        builder.addCase(addTodoListTC.fulfilled, (state, action)=>{
+            if (action.payload) state.todos.unshift(action.payload.data)
+        })
         builder.addCase(removeTodoListTC.fulfilled, (state, action) => {
-            if (action.payload) state.todos = state.todos.filter(t => action.payload && t.id !== action.payload.id)
+            if (action.payload) state.todos = state.todos.filter(t => action.payload && t.id !== action.payload.todolistId)
         })
         builder.addCase(changeTodoListTitleTC.fulfilled, (state, action) => {
             if (action.payload){
