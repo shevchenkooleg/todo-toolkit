@@ -14,6 +14,11 @@ const AddItem = () => {
     const onNewTodoTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTodoListTitle(e.currentTarget.value)
     }
+    const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+        if (e.charCode === 13){
+            addTodoListHandler()
+        }
+    }
     const addTodoListHandler = () => {
         if (newTodoListTitle.trim() !== '') {
             dispatch(addTodoListTC({newTodoListTitle}))
@@ -24,7 +29,7 @@ const AddItem = () => {
     return (
         <div className={s.container}>
             <Input size={"small"} placeholder="Add new TODO" style={{margin: '0 15px 0 0'}}
-                   value={newTodoListTitle} onChange={onNewTodoTitleChangeHandler}/>
+                   value={newTodoListTitle} onChange={onNewTodoTitleChangeHandler} onKeyPress={onKeyPressHandler}/>
             <Button icon={<PlusOutlined/>} size={"middle"} onClick={addTodoListHandler}/>
         </div>
     );

@@ -32,7 +32,8 @@
     "uuid": "^8.3.2",
     "v1": "^1.0.0",
     "web-vitals": "^2.1.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "dotenv": "^16.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

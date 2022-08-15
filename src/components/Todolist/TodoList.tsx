@@ -16,11 +16,8 @@ type TaskFilterType = string
 const TodoList = (props:TodoListPropsType) => {
 
     const dispatch = useAppDispatch()
-    // const newTaskTitle = useAppSelector((state)=>state.taskReducer[props.id].newTaskTitle)
     const newTaskTitle = useAppSelector((state)=>state.tasks[props.id].newTaskTitle)
-    // const todoList = useAppSelector((state)=>state.todoListReducer.find((t)=>t.id === props.id))
     const todoList = useAppSelector((state)=>state.todos.todos.find((t)=>t.id === props.id))
-    // const tasks = useAppSelector((state)=>state.taskReducer[props.id].tasks)
     const tasks = useAppSelector((state)=>state.tasks[props.id].tasks)
     const [filter, setFilter] = useState<string | number>('All');
     const [edit, setEdit] = useState(false)
@@ -35,6 +32,16 @@ const TodoList = (props:TodoListPropsType) => {
 
     const onTitleChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
         dispatch(setNewTaskTitleValue({todoListId: props.id, newValue: e.currentTarget.value}))
+    }
+    const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+        if (e.charCode === 13){
+            switch (edit){
+                case false:
+                    return addNewTaskButtonHandler();
+                default:
+                    return editModeOFF()
+            }
+        }
     }
     const addNewTaskButtonHandler = () => {
         if (newTaskTitle.trim() !== '') {
@@ -79,14 +86,14 @@ const TodoList = (props:TodoListPropsType) => {
         <div className={s.container}>
             <div className={s.title}>
                 {todoList !== undefined && !edit && <h2 onDoubleClick={editModeON}>{todoList.title}</h2>}
-                {todoList !== undefined && edit && <input onChange={editTodoListTitleHandler} autoFocus={true} onBlur={editModeOFF} value={title}/>}
+                {todoList !== undefined && edit && <input onChange={editTodoListTitleHandler} autoFocus={true} onBlur={editModeOFF} onKeyPress={onKeyPressHandler} value={title}/>}
 
 
                 <Button className={s.deleteButton} icon={<CloseCircleOutlined />} size={"large"} type={"text"}
                         onClick={removeTodoListHandler} style={{margin: '0 0 0 10px'}} shape="circle"/>
             </div>
             <div className={s.addTaskBlock}>
-                <Input placeholder="Add new task" style={{width: '80%'}} value={newTaskTitle} onChange={onTitleChangeHandler}/>
+                <Input placeholder="Add new task" style={{width: '80%'}} value={newTaskTitle} onChange={onTitleChangeHandler} onKeyPress={onKeyPressHandler}/>
                 <Button icon={<PlusOutlined />} size={"middle"} onClick={addNewTaskButtonHandler}/>
             </div>
             {tasks && filteredTask(tasks, filter.toString()).map((task)=>{
