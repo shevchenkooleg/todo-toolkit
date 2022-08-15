@@ -8,7 +8,7 @@ import HomePage from "./components/HomePage/HomePage";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import Login from './components/LoginPage/Login';
 import RequireAuth from "./hoc/RequireAuth";
-import { useAppDispatch, useAppSelector } from './store/toolkitStore';
+import { useAppDispatch} from './store/toolkitStore';
 import { initializeAppTC } from './store/appSlice';
 
 
@@ -17,10 +17,8 @@ function App() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(initializeAppTC({}))
-    }, [])
-
-     const aaa = useAppSelector(state=>state.todos.todos)
+        dispatch(initializeAppTC())
+    }, [dispatch])
 
 
     return (

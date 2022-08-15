@@ -17,7 +17,6 @@ test('correct todolist should be removed', () => {
     expect(endState.todos[0].id).toBe(todolistId2);
 });
 
-
 test('correct todolist should be added', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();

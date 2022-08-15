@@ -19,8 +19,8 @@ export const getTodoListsTC = createAsyncThunk('todos/getTodoListsTC', () => {
 export const addTodoListTC = createAsyncThunk('todos/addTodoListTC', (param: { newTodoListTitle: string }) => {
     return ToDoAPI.addNewToDo(param.newTodoListTitle).then((res) => {
         if (res.data.resultCode === 0) {
+            console.log(res.data.data.item)
             return {data: res.data.data.item}
-            // thunkAPI.dispatch(getTodoListsTC())
 
         } else if (res.data.resultCode === 1) {
             openNotificationWithIcon('error', 'Error', res.data.messages[0])
