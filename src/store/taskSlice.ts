@@ -31,7 +31,6 @@ export const getTasks = createAsyncThunk('tasks/getTasks', (param: { todoListId:
 })
 export const addTask = createAsyncThunk('tasks/addTask', (params: { todoListId: string, newTaskTitle: string }, thunkAPI) => {
     TaskAPI.addTask({todoListId: params.todoListId, newTaskTitle: params.newTaskTitle}).then((res) => {
-        console.log(res)
         if (res.data.resultCode === 0) {
             thunkAPI.dispatch(getTasks({todoListId: params.todoListId}))
             thunkAPI.dispatch(setNewTaskTitleValue({todoListId: params.todoListId, newValue: ''}))
@@ -43,7 +42,6 @@ export const addTask = createAsyncThunk('tasks/addTask', (params: { todoListId: 
 export const removeTask = createAsyncThunk('tasks/removeTask', (params: { todoListId: string, taskId: string }, thunkAPI) => {
 
     TaskAPI.removeTask({todoListId: params.todoListId, taskId: params.taskId}).then((res) => {
-        console.log(res)
         if (res.data.resultCode === 0) {
             thunkAPI.dispatch(getTasks({todoListId: params.todoListId}))
         }
@@ -51,7 +49,6 @@ export const removeTask = createAsyncThunk('tasks/removeTask', (params: { todoLi
 })
 export const updateTaskTC = createAsyncThunk('tasks/updateTaskTC', (params: { todoListId: string, taskId: string, data: {} }, thunkAPI) => {
     TaskAPI.updateTask(params.todoListId, params.taskId, params.data).then((res) => {
-        console.log(res)
         if (res.data.resultCode === 0) {
             thunkAPI.dispatch(getTasks({todoListId: params.todoListId}))
         }

@@ -19,7 +19,7 @@ const HomePage = () => {
                     <AddItem/>
                     <div className={s.appTodo}>
                         {todoLists.map((todo) => {
-                            return <TodoList id={todo.id} key={todo.id}/>
+                            return <TodoList id={todo.id} title={todo.title} key={todo.id}/>
                         })}
                     </div>
                 </> :

@@ -21,8 +21,6 @@ const Login = () => {
         },
         validationSchema: LoginValidationSchema,
         onSubmit: (values, actions) => {
-            console.log(values.login, values.password, values.rememberMe)
-            // dispatch(loginTC(values.login, values.password, values.rememberMe))
             dispatch(loginTC({email: values.login, password: values.password, rememberMe: values.rememberMe}))
             actions.resetForm({values:{login:'', password:'',rememberMe:false}})
 

@@ -9,7 +9,6 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export const loginTC = createAsyncThunk('appSlice/login',
     (params: { email: string, password: string, rememberMe: boolean }, thunkAPI) => {
         AppAPI.logIn(params.email, params.password, params.rememberMe).then((res) => {
-            console.log(res)
             if (res.data.messages[0]) {
                 openNotificationWithIcon('error', 'Error', res.data.messages[0])
             }
@@ -22,7 +21,6 @@ export const logOutTC = createAsyncThunk('appSlice/logout',
     () => {
         return AppAPI.logOut().then((res) => {
             if (res.data.resultCode === 0) {
-                console.log(res)
                 return {isAuth: false}
             }
         })
@@ -31,7 +29,6 @@ export const initializeAppTC = createAsyncThunk('appSlice/initializeApp',
     (param,thunkAPI)=>{
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         return AppAPI.me().then((res) => {
-            console.log(res)
             if (res.data.messages[0] === 'You are not authorized') {
                 openNotificationWithIcon('error', 'Error', res.data.messages[0])
             } else {

@@ -25,8 +25,11 @@ const Task = (props: TaskPropsType) => {
         dispatch(updateTaskTC({todoListId: props.task.todoListId, taskId: props.task.id, data: createDataObj(props.task)}))
     }
     const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-        if (e.charCode === 13){
+        if (e.key === "Enter"){
             editTaskTitleModeOff()
+        } else if (e.key === "Escape"){
+            setTitle(props.task.title)
+            setEdit(false)
         }
     }
     const editTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +52,7 @@ const Task = (props: TaskPropsType) => {
             <Checkbox onChange={onCheckBoxClickHandler} checked={props.task.status !== 0}></Checkbox>
             <div className={s.taskTitle}>
                 {edit
-                    ? <Input value={title} autoFocus={true} onChange={editTaskTitleHandler} onBlur={editTaskTitleModeOff} onKeyPress={onKeyPressHandler}/>
+                    ? <Input value={title} autoFocus={true} onChange={editTaskTitleHandler} onBlur={editTaskTitleModeOff} onKeyUp={onKeyPressHandler}/>
                     : <ul className={s.titleToDo} onDoubleClick={editTaskTitleModeOn}>{props.task.title}</ul>
                 }
             </div>

@@ -12,6 +12,5 @@ export const createDataObj = (task: TaskType) => {
             default: return 0
         }
     }
-    console.log({title: task.title, status: newTaskStatus()})
     return {title: task.title, status: newTaskStatus()}
 }

@@ -12,14 +12,12 @@ export type ToDoListType = {
 
 export const getTodoListsTC = createAsyncThunk('todos/getTodoListsTC', () => {
     return ToDoAPI.getToDos().then((res) => {
-        console.log(res.data)
         return {data: res.data}
     })
 })
 export const addTodoListTC = createAsyncThunk('todos/addTodoListTC', (param: { newTodoListTitle: string }) => {
     return ToDoAPI.addNewToDo(param.newTodoListTitle).then((res) => {
         if (res.data.resultCode === 0) {
-            console.log(res.data.data.item)
             return {data: res.data.data.item}
 
         } else if (res.data.resultCode === 1) {

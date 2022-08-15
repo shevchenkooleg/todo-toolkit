@@ -1,5 +1,5 @@
 import {CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Input, Segmented } from 'antd';
+import { Button, Input, Modal, Segmented } from 'antd';
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {addTask, getTasks, setNewTaskTitleValue, TaskType } from '../../store/taskSlice';
 import {changeTodoListTitleTC, removeTodoListTC } from '../../store/todoSlice';
@@ -8,7 +8,8 @@ import Task from '../Task/Task';
 import s from './TodoList.module.css'
 
 type TodoListPropsType = {
-    id:string
+    id:string,
+    title: string
 }
 type TaskFilterType = string
 
@@ -22,6 +23,7 @@ const TodoList = (props:TodoListPropsType) => {
     const [filter, setFilter] = useState<string | number>('All');
     const [edit, setEdit] = useState(false)
     const [title,setTitle] = useState(todoList ? todoList.title : '')
+    const [visible, setVisible] = useState(false)
 
     useEffect(()=>{
         dispatch(getTasks({todoListId: props.id}))
@@ -34,13 +36,16 @@ const TodoList = (props:TodoListPropsType) => {
         dispatch(setNewTaskTitleValue({todoListId: props.id, newValue: e.currentTarget.value}))
     }
     const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-        if (e.charCode === 13){
+        if (e.key === "Enter"){
             switch (edit){
                 case false:
                     return addNewTaskButtonHandler();
                 default:
                     return editModeOFF()
             }
+        } else if (e.key === "Escape"){
+            setTitle(todoList ? todoList.title: '')
+            setEdit(false)
         }
     }
     const addNewTaskButtonHandler = () => {
@@ -83,27 +88,36 @@ const TodoList = (props:TodoListPropsType) => {
     }
 
     return (
-        <div className={s.container}>
-            <div className={s.title}>
-                {todoList !== undefined && !edit && <h2 onDoubleClick={editModeON}>{todoList.title}</h2>}
-                {todoList !== undefined && edit && <input onChange={editTodoListTitleHandler} autoFocus={true} onBlur={editModeOFF} onKeyPress={onKeyPressHandler} value={title}/>}
+        <>
+            <Modal title={'Attention!'} visible={visible} onOk={removeTodoListHandler} onCancel={() => setVisible(false)}>
+                <p className={s.titleModal}>Do you wont to <span
+                    className={s.textModal}>DELETE</span> <span className={s.attention}>{props.title}</span> todolist?</p>
+                <div className={s.insideModal}>
+                </div>
+            </Modal>
+            <div className={s.container}>
+                <div className={s.title}>
+                    {todoList !== undefined && !edit && <h2 onDoubleClick={editModeON}>{todoList.title}</h2>}
+                    {todoList !== undefined && edit && <input onChange={editTodoListTitleHandler} autoFocus={true} onBlur={editModeOFF} onKeyUp={onKeyPressHandler} value={title}/>}
 
 
-                <Button className={s.deleteButton} icon={<CloseCircleOutlined />} size={"large"} type={"text"}
-                        onClick={removeTodoListHandler} style={{margin: '0 0 0 10px'}} shape="circle"/>
-            </div>
-            <div className={s.addTaskBlock}>
-                <Input placeholder="Add new task" style={{width: '80%'}} value={newTaskTitle} onChange={onTitleChangeHandler} onKeyPress={onKeyPressHandler}/>
-                <Button icon={<PlusOutlined />} size={"middle"} onClick={addNewTaskButtonHandler}/>
-            </div>
-            {tasks && filteredTask(tasks, filter.toString()).map((task)=>{
-                return <Task key={task.id} task={task}/>
-            })}
-            <div className={s.filterBlock}>
-                <Segmented options={['All', 'InProgress', 'Done']} value={filter} onChange={setFilter} />
-            </div>
+                    <Button className={s.deleteButton} icon={<CloseCircleOutlined />} size={"large"} type={"text"}
+                            onClick={()=>{setVisible(true)}} style={{margin: '0 0 0 10px'}} shape="circle"/>
+                </div>
+                <div className={s.addTaskBlock}>
+                    <Input placeholder="Add new task" style={{width: '80%'}} value={newTaskTitle} onChange={onTitleChangeHandler} onKeyUp={onKeyPressHandler}/>
+                    <Button icon={<PlusOutlined />} size={"middle"} onClick={addNewTaskButtonHandler}/>
+                </div>
+                {tasks && filteredTask(tasks, filter.toString()).map((task)=>{
+                    return <Task key={task.id} task={task}/>
+                })}
+                <div className={s.filterBlock}>
+                    <Segmented options={['All', 'InProgress', 'Done']} value={filter} onChange={setFilter} />
+                </div>
 
-        </div>
+            </div>
+        </>
+
     );
 };
 

@@ -44,3 +44,8 @@ h2 {
     top: 0;
     transform: translate(40%, -40%);
 }
+
+.attention{
+    color: blue;
+    font-size: 20px;
+}
