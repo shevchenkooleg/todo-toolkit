@@ -4,7 +4,7 @@ import s from './Task.module.css'
 import {DeleteOutlined} from "@ant-design/icons";
 import {createDataObj} from "../../utils/createDataObjForTasksUpdate";
 import {removeTask, TaskType, updateTaskTC } from '../../store/taskSlice';
-import { useAppDispatch } from '../../store/toolkitStore';
+import {useAppDispatch, useAppSelector} from '../../store/toolkitStore';
 
 type TaskPropsType = {
     task: TaskType
@@ -15,6 +15,7 @@ type TaskPropsType = {
 const Task = (props: TaskPropsType) => {
 
     const dispatch = useAppDispatch()
+    const status = useAppSelector(state=>state.app.status)
     const [edit, setEdit] = useState(false)
     const [title, setTitle] = useState(props.task.title)
 
@@ -56,7 +57,7 @@ const Task = (props: TaskPropsType) => {
                     : <ul className={s.titleToDo} onDoubleClick={editTaskTitleModeOn}>{props.task.title}</ul>
                 }
             </div>
-            <Button icon={<DeleteOutlined />} size={"middle"} type={"text"} onClick={removeTaskHandler}/>
+            <Button icon={<DeleteOutlined />} size={"middle"} type={"text"} onClick={removeTaskHandler} disabled={status==='loading'}/>
         </div>
     );
 };

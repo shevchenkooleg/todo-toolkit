@@ -10,19 +10,21 @@ const Header = () => {
 
     const dispatch = useAppDispatch()
     const isAuth = useAppSelector(state=>state.app.isAuth)
+    const status = useAppSelector(state=>state.app.status)
     const logOutButtonHandler = () => {
         dispatch(logOutTC())
     }
 
     return (
         <div className={s.container}>
-            My_TODO-APP
+            MY_TODO_APP
             {isAuth && <Button className={s.logOutBtn}
                                type={'default'}
                                shape="round"
                                icon={<LogoutOutlined />}
                                size={'middle'}
                                onClick={logOutButtonHandler}
+                               disabled={status==='loading'}
             >{}</Button>}
 
         </div>

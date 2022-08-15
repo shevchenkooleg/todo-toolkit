@@ -20,6 +20,7 @@ const TodoList = (props:TodoListPropsType) => {
     const newTaskTitle = useAppSelector((state)=>state.tasks[props.id].newTaskTitle)
     const todoList = useAppSelector((state)=>state.todos.todos.find((t)=>t.id === props.id))
     const tasks = useAppSelector((state)=>state.tasks[props.id].tasks)
+    const status = useAppSelector(state=>state.app.status)
     const [filter, setFilter] = useState<string | number>('All');
     const [edit, setEdit] = useState(false)
     const [title,setTitle] = useState(todoList ? todoList.title : '')
@@ -101,12 +102,12 @@ const TodoList = (props:TodoListPropsType) => {
                     {todoList !== undefined && edit && <input onChange={editTodoListTitleHandler} autoFocus={true} onBlur={editModeOFF} onKeyUp={onKeyPressHandler} value={title}/>}
 
 
-                    <Button className={s.deleteButton} icon={<CloseCircleOutlined />} size={"large"} type={"text"}
+                    <Button className={s.deleteButton} icon={<CloseCircleOutlined />} size={"large"} type={"text"} disabled={status==='loading'}
                             onClick={()=>{setVisible(true)}} style={{margin: '0 0 0 10px'}} shape="circle"/>
                 </div>
                 <div className={s.addTaskBlock}>
                     <Input placeholder="Add new task" style={{width: '80%'}} value={newTaskTitle} onChange={onTitleChangeHandler} onKeyUp={onKeyPressHandler}/>
-                    <Button icon={<PlusOutlined />} size={"middle"} onClick={addNewTaskButtonHandler}/>
+                    <Button icon={<PlusOutlined />} size={"middle"} onClick={addNewTaskButtonHandler} disabled={status==='loading'}/>
                 </div>
                 {tasks && filteredTask(tasks, filter.toString()).map((task)=>{
                     return <Task key={task.id} task={task}/>

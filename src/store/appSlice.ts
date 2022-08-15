@@ -7,42 +7,68 @@ import {getTodoListsTC} from "./todoSlice";
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export const loginTC = createAsyncThunk('appSlice/login',
-    (params: { email: string, password: string, rememberMe: boolean }, thunkAPI) => {
-        AppAPI.logIn(params.email, params.password, params.rememberMe).then((res) => {
+    async (params: { email: string, password: string, rememberMe: boolean }, thunkAPI) => {
+        thunkAPI.dispatch(setAppStatus({status: "loading"}))
+        try {
+            const res = await AppAPI.logIn(params.email, params.password, params.rememberMe)
             if (res.data.messages[0]) {
+                thunkAPI.dispatch(setAppStatus({status: "failed"}))
                 openNotificationWithIcon('error', 'Error', res.data.messages[0])
+                return thunkAPI.rejectWithValue(null)
             }
             if (res.data.data.userId) {
+                thunkAPI.dispatch(setAppStatus({status: "succeeded"}))
                 thunkAPI.dispatch(initializeAppTC())
             }
-        })
+        } catch (error: any) {
+            thunkAPI.dispatch(setAppStatus({status: "failed"}))
+            openNotificationWithIcon('error', 'Error', error.message)
+            return thunkAPI.rejectWithValue(null)
+        } finally {
+            thunkAPI.dispatch(setAppStatus({status: "idle"}))
+        }
     })
 export const logOutTC = createAsyncThunk('appSlice/logout',
-    () => {
-        return AppAPI.logOut().then((res) => {
+    async (param, thunkAPI) => {
+        thunkAPI.dispatch(setAppStatus({status: "loading"}))
+        try {
+            const res = await AppAPI.logOut()
             if (res.data.resultCode === 0) {
+                thunkAPI.dispatch(setAppStatus({status: "succeeded"}))
                 return {isAuth: false}
+            } else {
+                thunkAPI.dispatch(setAppStatus({status: "failed"}))
+                openNotificationWithIcon('error', 'Error', res.data.messages[0])
+                return thunkAPI.rejectWithValue(null)
             }
-        })
+        } catch (error: any) {
+            thunkAPI.dispatch(setAppStatus({status: "failed"}))
+            openNotificationWithIcon('error', 'Error', error.message)
+            return thunkAPI.rejectWithValue(null)
+        } finally {
+            thunkAPI.dispatch(setAppStatus({status: "idle"}))
+        }
     })
 export const initializeAppTC = createAsyncThunk('appSlice/initializeApp',
-    (param,thunkAPI)=>{
+    async (param, thunkAPI) => {
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
-        return AppAPI.me().then((res) => {
-            if (res.data.messages[0] === 'You are not authorized') {
-                openNotificationWithIcon('error', 'Error', res.data.messages[0])
-            } else {
-                thunkAPI.dispatch(getTodoListsTC())
-                return {isAuth: true}
-            }
-        }).catch((err) => {
-            console.log(err)
-            openNotificationWithIcon('error', 'Error', err)
-        }).finally(() => {
-                thunkAPI.dispatch(initializeApp())
-                thunkAPI.dispatch(setAppStatus({status: 'idle'}))
-            }
-        )
+        try {
+            const res = await AppAPI.me()
+                if (res.data.messages[0] === 'You are not authorized') {
+                    openNotificationWithIcon('error', 'Error', res.data.messages[0])
+                    return thunkAPI.rejectWithValue(null)
+                } else {
+                    thunkAPI.dispatch(getTodoListsTC())
+                    return {isAuth: true}
+                }
+        } catch (error: any) {
+            thunkAPI.dispatch(setAppStatus({status: "failed"}))
+            openNotificationWithIcon('error', 'Error', error.message)
+            return thunkAPI.rejectWithValue(null)
+        } finally {
+            thunkAPI.dispatch(initializeApp())
+            thunkAPI.dispatch(setAppStatus({status: 'idle'}))
+        }
     })
 
 const appSlice = createSlice({
