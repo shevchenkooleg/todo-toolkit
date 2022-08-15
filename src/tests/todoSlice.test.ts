@@ -57,7 +57,7 @@ test('correct todolist should change its name', () => {
     expect(endState.todos[1].title).toBe(newTodolistTitle);
 });
 
-test('todos data Array must set in state correctly', ()=>{
+test('todos data Array must set in state correct', ()=>{
     let todolistId1 = v1();
     let todolistId2 = v1();
     let todolistId3 = v1();

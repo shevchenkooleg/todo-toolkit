@@ -14,7 +14,7 @@ export const loginTC = createAsyncThunk('appSlice/login',
                 openNotificationWithIcon('error', 'Error', res.data.messages[0])
             }
             if (res.data.data.userId) {
-                thunkAPI.dispatch(initializeAppTC({}))
+                thunkAPI.dispatch(initializeAppTC())
             }
         })
     })
@@ -28,7 +28,7 @@ export const logOutTC = createAsyncThunk('appSlice/logout',
         })
     })
 export const initializeAppTC = createAsyncThunk('appSlice/initializeApp',
-    (params: {},thunkAPI)=>{
+    (param,thunkAPI)=>{
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         return AppAPI.me().then((res) => {
             console.log(res)
@@ -75,6 +75,6 @@ const appSlice = createSlice({
 })
 
 
-const {initializeApp, setAppStatus} = appSlice.actions
+export const {initializeApp, setAppStatus} = appSlice.actions
 
 export default appSlice.reducer
