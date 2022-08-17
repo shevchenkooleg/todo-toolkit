@@ -91,7 +91,7 @@ const TodoList = (props:TodoListPropsType) => {
     return (
         <>
             <Modal title={'Attention!'} visible={visible} onOk={removeTodoListHandler} onCancel={() => setVisible(false)}>
-                <p className={s.titleModal}>Do you wont to <span
+                <p className={s.titleModal}>Do you want to <span
                     className={s.textModal}>DELETE</span> <span className={s.attention}>{props.title}</span> todolist?</p>
                 <div className={s.insideModal}>
                 </div>
